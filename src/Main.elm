@@ -57,17 +57,17 @@ update msg model =
         GotItems result ->
             ( model, Cmd.none )
 
-        ChangeWeight newContent ->
-            ( { model | weight = String.toInt newContent |> Maybe.withDefault 0 }, Cmd.none )
+        ChangeWeight weight ->
+            ( { model | weight = String.toInt weight |> Maybe.withDefault 0 }, Cmd.none )
 
-        ChangeBench newContent ->
-            ( { model | bench = String.toInt newContent |> Maybe.withDefault 0 }, Cmd.none )
-            
-        ChangeDeadlift newContent ->
-            ( { model | deadlift = String.toInt newContent |> Maybe.withDefault 0 }, Cmd.none )
+        ChangeBench bench ->
+            ( { model | bench = String.toInt bench |> Maybe.withDefault 0 }, Cmd.none )
 
-        ChangeSquat newContent ->
-            ( { model | squat = String.toInt newContent |> Maybe.withDefault 0 }, Cmd.none )
+        ChangeDeadlift deadlift ->
+            ( { model | deadlift = String.toInt deadlift |> Maybe.withDefault 0 }, Cmd.none )
+
+        ChangeSquat squat ->
+            ( { model | squat = String.toInt squat |> Maybe.withDefault 0 }, Cmd.none )
 
 
 fetchItems : Model -> Cmd Msg
@@ -86,25 +86,35 @@ dataEncoder model =
           , Encode.object
                 [ ( "BenchPress"
                   , Encode.object
-                        [ ( "value", Encode.int model.bench ), ( "unit", Encode.string "kg" ) ]
+                        [ ( "value", Encode.int model.bench )
+                        , ( "unit", Encode.string "kg" )
+                        ]
                   )
                 , ( "Deadlift"
                   , Encode.object
-                        [ ( "value", Encode.int model.deadlift ), ( "unit", Encode.string "kg" ) ]
+                        [ ( "value", Encode.int model.deadlift )
+                        , ( "unit", Encode.string "kg" )
+                        ]
                   )
                 , ( "OverheadPress"
                   , Encode.object
-                        [ ( "value", Encode.int 10 ), ( "unit", Encode.string "kg" ) ]
+                        [ ( "value", Encode.int 10 )
+                        , ( "unit", Encode.string "kg" )
+                        ]
                   )
                 , ( "Squat"
                   , Encode.object
-                        [ ( "value", Encode.int model.squat ), ( "unit", Encode.string "kg" ) ]
+                        [ ( "value", Encode.int model.squat )
+                        , ( "unit", Encode.string "kg" )
+                        ]
                   )
                 ]
           )
         , ( "bodyWeight"
           , Encode.object
-                [ ( "value", Encode.int model.weight ), ( "unit", Encode.string "kg" ) ]
+                [ ( "value", Encode.int model.weight )
+                , ( "unit", Encode.string "kg" )
+                ]
           )
         ]
 
@@ -122,9 +132,9 @@ view model =
                 [ h4 [] [ text "Gymio" ]
                 , p []
                     [ text model.description
-                    , a [ href "https://github.com/truongio/gymio-web" ] [ text "https://github.com/truongio/gymio-web" ]
+                    , a [ href "https://github.com/truongio/gymio-web-elm" ] [ text "https://github.com/truongio/gymio-web-elm" ]
                     ]
-                , label [ for "weight" ] [ text "Your weight" ]
+                , label [ for "weight" ] [ text "Weight" ]
                 , input
                     [ id "weight"
                     , placeholder "Over 9000!!!"
@@ -133,7 +143,7 @@ view model =
                     , Html.Attributes.value (String.fromInt model.weight)
                     ]
                     []
-                , label [ for "bench" ] [ text "Bench Press" ]
+                , label [ for "bench" ] [ text "Bench" ]
                 , input
                     [ id "bench"
                     , placeholder "Over 9000!!!"
@@ -161,7 +171,7 @@ view model =
                     ]
                     []
                 , br [] []
-                , button [ class "button-primary", onClick SaveStats ] [ text "Loggit" ]
+                , button [ class "button-primary", onClick SaveStats ] [ text "Save stats" ]
                 ]
             ]
         ]
